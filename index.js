@@ -23,8 +23,6 @@ function initializeMap() {
     "use strict";
     var mapCanvas, mapOptions, map, location, marker;
     
-    //addresses = ["+44620,+Guadalajara", "+44260,+Guadalajara"];
-    
     function fixlocation(position) {
         location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         mapCanvas = document.getElementById('map-canvas');
@@ -38,26 +36,6 @@ function initializeMap() {
         marker = new google.maps.Marker({position: location, map: map, title: "You are here!"});
     }
     
-   /* function fixlocations(position) {
-        var i, b, lat, lng, address;
-        
-        locations = [];
-        
-        for (i = 0, b = addresses.length; i < b; i++) {
-            
-            address = addresses[i];
-            
-            geocoder.geocode({ 'address': address}, function (results, status) {
-                if (status === google.maps.GeocoderStatus.OK) {
-                    lat = results[0].geometry.location.lat();
-                    lng = results[0].geometry.location.lng();
-                    locations[i] = new google.maps.LatLng(lat, lng);
-                } else {
-                    window.alert("Geocode was not successful for the following reason: " + status);
-                }
-            });
-        }
-    }*/
         
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(fixlocation, showError);
@@ -79,7 +57,7 @@ function generateRoute (origin, destination) {
     request = {
         origin: origin,
         destination: destination,
-        travelMode: google.maps.DirectionsTravelMode.DRIVING
+        travelMode: google.maps.DirectionsTravelMode.WALKING
     };
     
     directionsDisplay.setMap(map);
@@ -90,10 +68,13 @@ function generateRoute (origin, destination) {
     });
 }
 
+
+
 function setLocationsinMap() {
     "use strict";
     
-    var mapCanvas, mapOptions, geocoder, latlng, addresses, i, count, locations, markers;
+    var mapCanvas, mapOptions, geocoder, latlng, addresses, i, 
+        count, locations, markers;
     mapCanvas = document.getElementById('map-canvas');
     mapOptions = {
         center: new google.maps.LatLng(20, -103),
@@ -101,7 +82,8 @@ function setLocationsinMap() {
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     map = new google.maps.Map(mapCanvas, mapOptions);
-    addresses = ["+ITESO,+Tlaquepaque", "+44620,+Guadalajara", "+44950,+Guadalajara"];
+   /* addresses = ["+ITESO,+Tlaquepaque", 
+                 "+44620,+Guadalajara"];
     locations = [];
     geocoder = new google.maps.Geocoder();
     
@@ -114,33 +96,79 @@ function setLocationsinMap() {
                 lat = results[0].geometry.location.lat();
                 lng = results[0].geometry.location.lng();
                 latlng = new google.maps.LatLng(lat, lng);
-                locations[i] = latlng;
+                locations.push(latlng);
             } else {
                 window.alert("Geocode was not successful for the following reason: " + status);
             }
             
             if (i > 0) {
-               generateRoute( new google.maps.LatLng(20, -103),  latlng);
+               generateRoute( locations[0],  latlng);
             }    
                 
             
-            new google.maps.Marker({position: latlng, map: map, title: "You are here!"});
+            new google.maps.Marker({position: latlng, 
+                                    map: map, 
+                                    title: "You are here!"});
         });
-    }
-    
-    
-    
-    /*count = addresses.length;
-    for (i = 1; i < count; i++) {
-        generateRoute (locations[i], locations[0]);
     }*/
+    
+    readData();
 }
 
+function readData(){
+    var query, selectQuery;
+    
+    query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
+    query.setQuery('select H, AB, AD');
+    query.send(handleQueryResponse);
+}
 
+function handleQueryResponse(response) {
+    var data, count, i, direccion, geocoder, lociteso;
+    
+    if(response.isError()) {
+        window.alert(response.getMessage());
+    }
+    
+    data = response.getDataTable();
+    count = data.getNumberOfRows();
+    geocoder = new google.maps.Geocoder();
+    
+    geocoder.geocode({ address: "+ITESO,+Tlaquepaque"}, function (results, status) {
+        var lat, lng;
 
+        if (status === google.maps.GeocoderStatus.OK) {
+            lat = results[0].geometry.location.lat();
+            lng = results[0].geometry.location.lng();
+            lociteso = new google.maps.LatLng(lat, lng);
+        } else {
+            window.alert("Geocode was not successful for the following reason: " + status);
+        }
+  
+            for(i = 0; i < count; i++){
 
+                direccion = "+" + data.getValue(i,0) + "+"+ data.getValue(i,1) + "+" + data.getValue(i,2);
 
-//var address = "+44620,+Guadalajara";
+                geocoder.geocode({ address: direccion}, function (results, status) {
+                    var lat, lng, latlng;
+
+                    if (status === google.maps.GeocoderStatus.OK) {
+                        lat = results[0].geometry.location.lat();
+                        lng = results[0].geometry.location.lng();
+                        latlng = new google.maps.LatLng(lat, lng);
+                    } else {
+                        window.alert("Geocode was not successful for the following reason: " + status);
+                    }
+
+                    if (i > 0) {
+                       generateRoute( lociteso,  latlng);
+                    }    
+                });
+            }
+        });
+    
+}
+
 
 var app = angular.module('App', ['ngRoute']);
 
