@@ -19,7 +19,7 @@ function showError(error) {
       
 }
 
-function initializeMap() {
+function setLocationsinMap() {
     "use strict";
     var mapCanvas, mapOptions, map, location, marker;
     
@@ -46,7 +46,7 @@ function initializeMap() {
 
 var map;
 
-function generateRoute (origin, destination) {
+function generateRoute(origin, destination) {
     "use strict";
     
     var directionsService, directionsDisplay, request;
@@ -68,71 +68,30 @@ function generateRoute (origin, destination) {
     });
 }
 
-
-
-function setLocationsinMap() {
+function fillCarChart(response) {
     "use strict";
     
-    var mapCanvas, mapOptions, geocoder, latlng, addresses, i, 
-        count, locations, markers;
-    mapCanvas = document.getElementById('map-canvas');
-    mapOptions = {
-        center: new google.maps.LatLng(20, -103),
-        zoom: 14,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    map = new google.maps.Map(mapCanvas, mapOptions);
-   /* addresses = ["+ITESO,+Tlaquepaque", 
-                 "+44620,+Guadalajara"];
-    locations = [];
-    geocoder = new google.maps.Geocoder();
+    var data;
     
-    count = addresses.length;
-    for (i = 0; i < count; i++) {
-        geocoder.geocode({ address: addresses[i]}, function (results, status) {
-            var lat, lng;
-
-            if (status === google.maps.GeocoderStatus.OK) {
-                lat = results[0].geometry.location.lat();
-                lng = results[0].geometry.location.lng();
-                latlng = new google.maps.LatLng(lat, lng);
-                locations.push(latlng);
-            } else {
-                window.alert("Geocode was not successful for the following reason: " + status);
-            }
-            
-            if (i > 0) {
-               generateRoute( locations[0],  latlng);
-            }    
-                
-            
-            new google.maps.Marker({position: latlng, 
-                                    map: map, 
-                                    title: "You are here!"});
-        });
-    }*/
+    data = response.getDataTable();
     
-    readData();
-}
-
-function readData(){
-    var query, selectQuery;
+    window.alert(data.getValue(0, 1));
     
-    query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
-    query.setQuery('select H, AB, AD');
-    query.send(handleQueryResponse);
 }
 
 function handleQueryResponse(response) {
-    var data, count, i, direccion, geocoder, lociteso;
+    "use strict";
+    var data, count, i, direccion, geocoder, lociteso, num, totdis, avrdis;
     
-    if(response.isError()) {
+    if (response.isError()) {
         window.alert(response.getMessage());
     }
     
     data = response.getDataTable();
     count = data.getNumberOfRows();
     geocoder = new google.maps.Geocoder();
+    
+    window.alert("Total de ciclistas: " + count);
     
     geocoder.geocode({ address: "+ITESO,+Tlaquepaque"}, function (results, status) {
         var lat, lng;
@@ -145,35 +104,62 @@ function handleQueryResponse(response) {
             window.alert("Geocode was not successful for the following reason: " + status);
         }
   
-            for(i = 0; i < count; i++){
+        for (i = 0; i < count; i++) {
 
-                direccion = "+" + data.getValue(i,0) + "+"+ data.getValue(i,1) + "+" + data.getValue(i,2);
+            direccion = "+" + data.getValue(i, 0) + "+" + data.getValue(i, 1) + "+" + data.getValue(i, 2);
 
-                geocoder.geocode({ address: direccion}, function (results, status) {
-                    var lat, lng, latlng;
+            geocoder.geocode({ address: direccion}, function (results, status) {
+                var lat, lng, latlng;
 
-                    if (status === google.maps.GeocoderStatus.OK) {
-                        lat = results[0].geometry.location.lat();
-                        lng = results[0].geometry.location.lng();
-                        latlng = new google.maps.LatLng(lat, lng);
-                    } else {
-                        window.alert("Geocode was not successful for the following reason: " + status);
-                    }
+                if (status === google.maps.GeocoderStatus.OK) {
+                    lat = results[0].geometry.location.lat();
+                    lng = results[0].geometry.location.lng();
+                    latlng = new google.maps.LatLng(lat, lng);
+                } else {
+                    window.alert("Geocode was not successful for the following reason: " + status);
+                }
 
-                    if (i > 0) {
-                       generateRoute( lociteso,  latlng);
-                    }    
-                });
-            }
-        });
+                if (i > 0) {
+                    generateRoute(lociteso,  latlng);
+                }
+            });
+        }
+    });
+}
+
+function readData() {
+    "use strict";
+    var query, selectQuery;
     
+    query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
+    query.setQuery('select *'); 
+    query.send(handleQueryResponse);
+    
+    query.setQuery('select M, count(B) group by M');
+    query.send(fillCarChart);
+}
+
+function initializeMap() {
+    "use strict";
+    
+    var mapCanvas, mapOptions, geocoder, latlng, addresses, i,
+        count, locations, markers;
+    mapCanvas = document.getElementById('map-canvas');
+    mapOptions = {
+        center: new google.maps.LatLng(20, -103),
+        zoom: 14,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    map = new google.maps.Map(mapCanvas, mapOptions);
+    
+    readData();
 }
 
 
 var app = angular.module('App', ['ngRoute']);
 
 app.config(function ($routeProvider) {
-
+    "use strict";
 });
 
 var SensorControllers = app.controller("SensorControllers", function ($scope) {
@@ -192,10 +178,8 @@ var SensorControllers = app.controller("SensorControllers", function ($scope) {
         }, showError);
     });
     
-    //myQOBject.PositionChanged.
-    
 });
 
 
-google.maps.event.addDomListener(window, 'load', setLocationsinMap);
+google.maps.event.addDomListener(window, 'load', initializeMap);
 
