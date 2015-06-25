@@ -1,5 +1,7 @@
 /*global $, jQuery, google, angular, geocoder*/
 
+//https://developers.google.com/chart/interactive/docs/gallery/barchart
+
 function showError(error) {
     "use strict";
     switch (error.code) {
@@ -43,7 +45,6 @@ function setLocationsinMap() {
 }
 
 
-
 var map;
 
 function generateRoute(origin, destination) {
@@ -68,15 +69,150 @@ function generateRoute(origin, destination) {
     });
 }
 
+
+function fillGenChart(response) {
+    "use strict";
+    
+    var data, options, chart;
+    
+    data = response.getDataTable();
+
+    options = {
+          title: 'Genero'
+    };
+    
+    chart = new google.visualization.PieChart(document.getElementById('generochart'));
+    
+    chart.draw(data, options);
+    
+    window.alert("Genero");
+}
+
+function fillCarreraChart(response) {
+    "use strict";
+    
+    var data, options, chart;
+    
+    data = response.getDataTable();
+
+    options = {
+        title: 'Carrera',
+        bar: {groupWidth: "95%"}    
+    };
+    
+    chart = new google.visualization.BarChart(document.getElementById("carerachart"));
+    
+    chart.draw(data, options);
+    
+    window.alert("Carrera");
+}
+
+function fillSemestreChart(response) {
+    "use strict";
+    
+    var data, options, chart;
+    
+    data = response.getDataTable();
+
+    window.alert(data.getValue(0, 0) + " " + data.getValue(0, 1));
+    options = {
+          title: 'Semestre'
+    };
+    
+     window.alert("Semestre");
+    chart = new google.visualization.PieChart(document.getElementById('semestrechart'));
+    
+    chart.draw(data, options);
+}
+
+function fillMunChart(response) {
+    "use strict";
+    
+    var data, options, chart;
+    
+    data = response.getDataTable();
+
+    options = {
+          title: 'Municipio'
+    };
+    
+    chart = new google.visualization.PieChart(document.getElementById('municipiochart'));
+    
+    chart.draw(data, options);
+    
+    window.alert("Municipio");
+}
+
+function fillAlt1Chart(response) {
+    "use strict";
+    
+    var data, options, chart;
+    
+    data = response.getDataTable();
+
+    options = {
+          title: 'Primera altenativa de transporte'
+    };
+    
+    chart = new google.visualization.BarChart(document.getElementById('atl1chart'));
+    
+    chart.draw(data, options);
+    
+    window.alert("Alt1");
+}
+
+function fillAlt2Chart(response) {
+    "use strict";
+    
+    var data, options, chart;
+    
+    data = response.getDataTable();
+
+    options = {
+          title: 'Segunda altenativa de transporte'
+    };
+    
+    chart = new google.visualization.BarChart(document.getElementById('atl2chart'));
+    
+    chart.draw(data, options);
+    
+    window.alert("Alt2");
+}
+
+function fillAlt3Chart(response) {
+    "use strict";
+    
+    var data, options, chart;
+    
+    data = response.getDataTable();
+
+    options = {
+          title: 'Tercera altenativa de transporte'
+    };
+    
+    chart = new google.visualization.BarChart(document.getElementById('atl3chart'));
+    
+    chart.draw(data, options);
+    
+    window.alert("Alt3");
+}
+
 function fillCarChart(response) {
     "use strict";
     
-    var data;
+    var data, options, chart;
     
     data = response.getDataTable();
+    window.alert("Carro");
+    options = {
+          title: '¿Tienes auto?'
+    };
+ 
+    chart = new google.visualization.PieChart(document.getElementById('carchart'));
     
-    window.alert(data.getValue(0, 1));
+    chart.draw(data, options);
     
+   
 }
 
 function handleQueryResponse(response) {
@@ -90,9 +226,8 @@ function handleQueryResponse(response) {
     data = response.getDataTable();
     count = data.getNumberOfRows();
     geocoder = new google.maps.Geocoder();
-    
-    window.alert("Total de ciclistas: " + count);
-    
+    totdis = 0;
+
     geocoder.geocode({ address: "+ITESO,+Tlaquepaque"}, function (results, status) {
         var lat, lng;
 
@@ -105,7 +240,7 @@ function handleQueryResponse(response) {
         }
   
         for (i = 0; i < count; i++) {
-
+            
             direccion = "+" + data.getValue(i, 0) + "+" + data.getValue(i, 1) + "+" + data.getValue(i, 2);
 
             geocoder.geocode({ address: direccion}, function (results, status) {
@@ -118,12 +253,19 @@ function handleQueryResponse(response) {
                 } else {
                     window.alert("Geocode was not successful for the following reason: " + status);
                 }
-
+            
+                totdis = totdis + google.maps.geometry.spherical.computeDistanceBetween (lociteso,  latlng);
+                window.alert(totdis);
+                
                 if (i > 0) {
                     generateRoute(lociteso,  latlng);
                 }
             });
         }
+        
+        //window.alert("Total: " + count);
+        //window.alert("Distancia total: " + totdis/1000 + " km");
+        //window.alert("Distancia promedio: " + (totdis/1000)/count + " km");
     });
 }
 
@@ -132,11 +274,41 @@ function readData() {
     var query, selectQuery;
     
     query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
-    query.setQuery('select *'); 
+    query.setQuery('select H, AB, AD'); 
     query.send(handleQueryResponse);
     
+    query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
+    query.setQuery('select C, count(B) group by C');
+    query.send(fillGenChart);
+    
+    query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
+    query.setQuery('select E, count(B) group by E');
+    query.send(fillCarreraChart);
+    
+    query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
+    query.setQuery('select F, count(B) group by F');
+    query.send(fillSemestreChart);
+        
+    query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
+    query.setQuery('select AB, count(B) group by AB');
+    query.send(fillMunChart);
+    
+    query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
+    query.setQuery('select J, count(B) group by J');
+    query.send(fillAlt1Chart);
+   
+    query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
+    query.setQuery('select K, count(B) group by K');
+    query.send(fillAl2tChart);
+  
+    query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
+    query.setQuery('select L, count(B) group by L');
+    query.send(fillAlt3Chart);
+    
+    query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
     query.setQuery('select M, count(B) group by M');
     query.send(fillCarChart);
+
 }
 
 function initializeMap() {
@@ -177,7 +349,6 @@ var SensorControllers = app.controller("SensorControllers", function ($scope) {
             $scope.Position = pos.coords.latitude + "," + pos.coords.longitude;
         }, showError);
     });
-    
 });
 
 
