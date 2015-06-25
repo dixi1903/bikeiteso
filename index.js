@@ -84,8 +84,6 @@ function fillGenChart(response) {
     chart = new google.visualization.PieChart(document.getElementById('generochart'));
     
     chart.draw(data, options);
-    
-    window.alert("Genero");
 }
 
 function fillCarreraChart(response) {
@@ -103,8 +101,6 @@ function fillCarreraChart(response) {
     chart = new google.visualization.BarChart(document.getElementById("carerachart"));
     
     chart.draw(data, options);
-    
-    window.alert("Carrera");
 }
 
 function fillSemestreChart(response) {
@@ -119,8 +115,7 @@ function fillSemestreChart(response) {
           title: 'Semestre'
     };
     
-     window.alert("Semestre");
-    chart = new google.visualization.PieChart(document.getElementById('semestrechart'));
+    chart = new google.visualization.BarChart(document.getElementById('semestrechart'));
     
     chart.draw(data, options);
 }
@@ -139,8 +134,6 @@ function fillMunChart(response) {
     chart = new google.visualization.PieChart(document.getElementById('municipiochart'));
     
     chart.draw(data, options);
-    
-    window.alert("Municipio");
 }
 
 function fillAlt1Chart(response) {
@@ -157,8 +150,6 @@ function fillAlt1Chart(response) {
     chart = new google.visualization.BarChart(document.getElementById('atl1chart'));
     
     chart.draw(data, options);
-    
-    window.alert("Alt1");
 }
 
 function fillAlt2Chart(response) {
@@ -175,8 +166,6 @@ function fillAlt2Chart(response) {
     chart = new google.visualization.BarChart(document.getElementById('atl2chart'));
     
     chart.draw(data, options);
-    
-    window.alert("Alt2");
 }
 
 function fillAlt3Chart(response) {
@@ -193,8 +182,23 @@ function fillAlt3Chart(response) {
     chart = new google.visualization.BarChart(document.getElementById('atl3chart'));
     
     chart.draw(data, options);
+}
+
+
+function fillMotivChart(response) {
+    "use strict";
     
-    window.alert("Alt3");
+    var data, options, chart;
+    
+    data = response.getDataTable();
+
+    options = {
+          title: 'Llegada 9:00 am'
+    };
+    
+    chart = new google.visualization.PieChart(document.getElementById('motivacionchart'));
+    
+    chart.draw(data, options);
 }
 
 function fillCarChart(response) {
@@ -203,7 +207,7 @@ function fillCarChart(response) {
     var data, options, chart;
     
     data = response.getDataTable();
-    window.alert("Carro");
+    
     options = {
           title: '¿Tienes auto?'
     };
@@ -211,8 +215,6 @@ function fillCarChart(response) {
     chart = new google.visualization.PieChart(document.getElementById('carchart'));
     
     chart.draw(data, options);
-    
-   
 }
 
 function handleQueryResponse(response) {
@@ -255,7 +257,6 @@ function handleQueryResponse(response) {
                 }
             
                 totdis = totdis + google.maps.geometry.spherical.computeDistanceBetween (lociteso,  latlng);
-                window.alert(totdis);
                 
                 if (i > 0) {
                     generateRoute(lociteso,  latlng);
@@ -296,14 +297,18 @@ function readData() {
     query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
     query.setQuery('select J, count(B) group by J');
     query.send(fillAlt1Chart);
-   
+
     query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
     query.setQuery('select K, count(B) group by K');
-    query.send(fillAl2tChart);
-  
+    query.send(fillAlt2Chart);
+    
     query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
     query.setQuery('select L, count(B) group by L');
     query.send(fillAlt3Chart);
+    
+    query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
+    query.setQuery('select Q, count(B) group by Q');
+    query.send(fillMotivChart);
     
     query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
     query.setQuery('select M, count(B) group by M');
