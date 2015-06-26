@@ -270,48 +270,50 @@ function handleQueryResponse(response) {
     });
 }
 
+var dblocation = 'https://docs.google.com/spreadsheets/d/1ttm8HoES0jBq6SsAvBurAWb8UTi9E5csD-wUQWDHHpE/edit?usp=sharing'
+
 function readData() {
     "use strict";
     var query, selectQuery;
     
-    query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
-    query.setQuery('select H, AB, AD'); 
+    query = new google.visualization.Query(dblocation);
+    query.setQuery('select I, J, G'); 
     query.send(handleQueryResponse);
     
-    query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
+    query = new google.visualization.Query(dblocation);
     query.setQuery('select C, count(B) group by C');
     query.send(fillGenChart);
     
-    query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
+    query = new google.visualization.Query(dblocation);
     query.setQuery('select E, count(B) group by E');
     query.send(fillCarreraChart);
     
-    query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
+    query = new google.visualization.Query(dblocation);
     query.setQuery('select F, count(B) group by F');
     query.send(fillSemestreChart);
         
-    query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
-    query.setQuery('select AB, count(B) group by AB');
+    query = new google.visualization.Query(dblocation);
+    query.setQuery('select J, count(B) group by J');
     query.send(fillMunChart);
     
-    query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
-    query.setQuery('select J, count(B) group by J');
+    query = new google.visualization.Query(dblocation);
+    query.setQuery('select M, count(B) group by M');
     query.send(fillAlt1Chart);
 
-    query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
-    query.setQuery('select K, count(B) group by K');
+    query = new google.visualization.Query(dblocation);
+    query.setQuery('select N, count(B) group by N');
     query.send(fillAlt2Chart);
     
-    query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
-    query.setQuery('select L, count(B) group by L');
+    query = new google.visualization.Query(dblocation);
+    query.setQuery('select O, count(B) group by O');
     query.send(fillAlt3Chart);
     
-    query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
-    query.setQuery('select Q, count(B) group by Q');
+    query = new google.visualization.Query(dblocation);
+    query.setQuery('select R, count(B) group by R');
     query.send(fillMotivChart);
     
-    query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1hv-FF22PjBIO2_pcc8ks8VmI98chnMOmHvzkpw7CKQE/edit?usp=sharing');
-    query.setQuery('select M, count(B) group by M');
+    query = new google.visualization.Query(dblocation);
+    query.setQuery('select P, count(B) group by P');
     query.send(fillCarChart);
 
 }
