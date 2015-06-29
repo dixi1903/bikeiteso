@@ -2,49 +2,6 @@
 
 //https://developers.google.com/chart/interactive/docs/gallery/barchart
 
-/*function showError(error) {
-    "use strict";
-    switch (error.code) {
-    case error.PERMISSION_DENIED:
-        window.alert("User denied the request for Geolocation.");
-        break;
-    case error.POSITION_UNAVAILABLE:
-        window.alert("Location information is unavailable.");
-        break;
-    case error.TIMEOUT:
-        window.alert("The request to get user location timed out.");
-        break;
-    case error.UNKNOWN_ERROR:
-        window.alert("An unknown error occurred.");
-        break;
-    }
-      
-}
-
-function setLocationsinMap() {
-    "use strict";
-    var mapCanvas, mapOptions, map, location, marker;
-    
-    function fixlocation(position) {
-        location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        mapCanvas = document.getElementById('map-canvas');
-        mapOptions = {
-            center: location,
-            zoom: 14,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        
-        map = new google.maps.Map(mapCanvas, mapOptions);
-        marker = new google.maps.Marker({position: location, map: map, title: "You are here!"});
-    }
-    
-        
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(fixlocation, showError);
-    }
-}*/
-
-
 var map;
 
 function generateRoute(origin, destination) {
@@ -77,10 +34,10 @@ function fillGenChart(response) {
     data = response.getDataTable();
 
     options = {
-          title: 'Genero'
+        title: "Genero"
     };
     
-    chart = new google.visualization.PieChart(document.getElementById('generochart'));
+    chart = new google.visualization.PieChart(document.getElementById("generochart"));
     
     chart.draw(data, options);
 }
@@ -93,8 +50,8 @@ function fillCarreraChart(response) {
     data = response.getDataTable();
 
     options = {
-        title: 'Carrera',
-        bar: {groupWidth: "95%"}    
+        title: "Carrera",
+        bar: {groupWidth: "95%"}
     };
     
     chart = new google.visualization.BarChart(document.getElementById("carerachart"));
@@ -110,10 +67,10 @@ function fillSemestreChart(response) {
     data = response.getDataTable();
 
     options = {
-          title: 'Semestre'
+        title: "Semestre"
     };
     
-    chart = new google.visualization.BarChart(document.getElementById('semestrechart'));
+    chart = new google.visualization.BarChart(document.getElementById("semestrechart"));
     
     chart.draw(data, options);
 }
@@ -126,10 +83,10 @@ function fillMunChart(response) {
     data = response.getDataTable();
 
     options = {
-          title: 'Municipio'
+        title: "Municipio"
     };
     
-    chart = new google.visualization.PieChart(document.getElementById('municipiochart'));
+    chart = new google.visualization.PieChart(document.getElementById("municipiochart"));
     
     chart.draw(data, options);
 }
@@ -142,10 +99,10 @@ function fillAlt1Chart(response) {
     data = response.getDataTable();
 
     options = {
-          title: 'Primera altenativa de transporte'
+        title: "Primera altenativa de transporte"
     };
     
-    chart = new google.visualization.BarChart(document.getElementById('atl1chart'));
+    chart = new google.visualization.BarChart(document.getElementById("atl1chart"));
     
     chart.draw(data, options);
 }
@@ -158,10 +115,10 @@ function fillAlt2Chart(response) {
     data = response.getDataTable();
 
     options = {
-          title: 'Segunda altenativa de transporte'
+        title: "Segunda altenativa de transporte"
     };
     
-    chart = new google.visualization.BarChart(document.getElementById('atl2chart'));
+    chart = new google.visualization.BarChart(document.getElementById("atl2chart"));
     
     chart.draw(data, options);
 }
@@ -174,10 +131,10 @@ function fillAlt3Chart(response) {
     data = response.getDataTable();
 
     options = {
-          title: 'Tercera altenativa de transporte'
+        title: "Tercera altenativa de transporte"
     };
     
-    chart = new google.visualization.BarChart(document.getElementById('atl3chart'));
+    chart = new google.visualization.BarChart(document.getElementById("atl3chart"));
     
     chart.draw(data, options);
 }
@@ -190,10 +147,10 @@ function fillMotivChart(response) {
     data = response.getDataTable();
 
     options = {
-          title: 'Llegada 9:00 am'
+        title: "Llegada 9:00 am"
     };
     
-    chart = new google.visualization.PieChart(document.getElementById('motivacionchart'));
+    chart = new google.visualization.PieChart(document.getElementById("motivacionchart"));
     
     chart.draw(data, options);
 }
@@ -206,10 +163,10 @@ function fillCarChart(response) {
     data = response.getDataTable();
     
     options = {
-          title: '¿Tienes auto?'
+        title: "¿Tienes auto?"
     };
  
-    chart = new google.visualization.PieChart(document.getElementById('carchart'));
+    chart = new google.visualization.PieChart(document.getElementById("carchart"));
     
     chart.draw(data, options);
 }
@@ -253,7 +210,7 @@ function fillRoutes(response) {
                     window.alert("Geocode was not successful for the following reason: " + status);
                 }
             
-                totdis = totdis + google.maps.geometry.spherical.computeDistanceBetween (lociteso,  latlng);
+                totdis = totdis + google.maps.geometry.spherical.computeDistanceBetween(lociteso,  latlng);
                 
                 if (i > 0) {
                     generateRoute(lociteso,  latlng);
@@ -267,50 +224,50 @@ function fillRoutes(response) {
     });
 }
 
-var dblocation = 'https://docs.google.com/spreadsheets/d/1ttm8HoES0jBq6SsAvBurAWb8UTi9E5csD-wUQWDHHpE/edit?usp=sharing';
+var dblocation = "https://docs.google.com/spreadsheets/d/1ttm8HoES0jBq6SsAvBurAWb8UTi9E5csD-wUQWDHHpE/edit?usp=sharing";
 
 function readData() {
     "use strict";
     var query, selectQuery;
     
     query = new google.visualization.Query(dblocation);
-    query.setQuery('select I, J, G where S = "7:00 am"'); 
+    query.setQuery("select I, J, G where S = '7:00 am' or T = '11:00 am'");
     query.send(fillRoutes);
     
     query = new google.visualization.Query(dblocation);
-    query.setQuery('select C, count(B) group by C');
+    query.setQuery("select C, count(B) group by C");
     query.send(fillGenChart);
     
     query = new google.visualization.Query(dblocation);
-    query.setQuery('select E, count(B) group by E');
+    query.setQuery("select E, count(B) group by E");
     query.send(fillCarreraChart);
     
     query = new google.visualization.Query(dblocation);
-    query.setQuery('select F, count(B) group by F');
+    query.setQuery("select F, count(B) group by F");
     query.send(fillSemestreChart);
         
     query = new google.visualization.Query(dblocation);
-    query.setQuery('select J, count(B) group by J');
+    query.setQuery("select J, count(B) group by J");
     query.send(fillMunChart);
     
     query = new google.visualization.Query(dblocation);
-    query.setQuery('select M, count(B) group by M');
+    query.setQuery("select M, count(B) group by M");
     query.send(fillAlt1Chart);
 
     query = new google.visualization.Query(dblocation);
-    query.setQuery('select N, count(B) group by N');
+    query.setQuery("select N, count(B) group by N");
     query.send(fillAlt2Chart);
     
     query = new google.visualization.Query(dblocation);
-    query.setQuery('select O, count(B) group by O');
+    query.setQuery("select O, count(B) group by O");
     query.send(fillAlt3Chart);
     
     query = new google.visualization.Query(dblocation);
-    query.setQuery('select R, count(B) group by R');
+    query.setQuery("select R, count(B) group by R");
     query.send(fillMotivChart);
     
     query = new google.visualization.Query(dblocation);
-    query.setQuery('select P, count(B) group by P');
+    query.setQuery("select P, count(B) group by P");
     query.send(fillCarChart);
 }
 
@@ -337,8 +294,8 @@ app.config(function ($routeProvider) {
     "use strict";
 });
 
-var rowIndex = -1;
-$('.selectAll').click(function(){
+/*var rowIndex = -1;
+$(".selectAll").click(function(){
     var ind = $(this).closest('th').index();
     if(ind == 0){
             $('.case').click();
@@ -356,7 +313,7 @@ $('.selectAll').click(function(){
         }
 });
 
-$('.case').click(rowCheck);
+$(".case").click(rowCheck);
 
 function rowCheck(){
     var ind = $(this).closest('td').index();
@@ -390,7 +347,7 @@ var SensorControllers = app.controller("SensorControllers", function ($scope) {
         }, showError);
     });
 });
+*/
 
-
-google.maps.event.addDomListener(window, 'load', initializeMap);
+google.maps.event.addDomListener(window, "load", initializeMap);
 
