@@ -2,7 +2,7 @@
 
 //https://developers.google.com/chart/interactive/docs/gallery/barchart
 
-function showError(error) {
+/*function showError(error) {
     "use strict";
     switch (error.code) {
     case error.PERMISSION_DENIED:
@@ -42,7 +42,7 @@ function setLocationsinMap() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(fixlocation, showError);
     }
-}
+}*/
 
 
 var map;
@@ -68,7 +68,6 @@ function generateRoute(origin, destination) {
         }
     });
 }
-
 
 function fillGenChart(response) {
     "use strict";
@@ -110,7 +109,6 @@ function fillSemestreChart(response) {
     
     data = response.getDataTable();
 
-    window.alert(data.getValue(0, 0) + " " + data.getValue(0, 1));
     options = {
           title: 'Semestre'
     };
@@ -184,7 +182,6 @@ function fillAlt3Chart(response) {
     chart.draw(data, options);
 }
 
-
 function fillMotivChart(response) {
     "use strict";
     
@@ -217,7 +214,7 @@ function fillCarChart(response) {
     chart.draw(data, options);
 }
 
-function handleQueryResponse(response) {
+function fillRoutes(response) {
     "use strict";
     var data, count, i, direccion, geocoder, lociteso, num, totdis, avrdis;
     
@@ -270,15 +267,15 @@ function handleQueryResponse(response) {
     });
 }
 
-var dblocation = 'https://docs.google.com/spreadsheets/d/1ttm8HoES0jBq6SsAvBurAWb8UTi9E5csD-wUQWDHHpE/edit?usp=sharing'
+var dblocation = 'https://docs.google.com/spreadsheets/d/1ttm8HoES0jBq6SsAvBurAWb8UTi9E5csD-wUQWDHHpE/edit?usp=sharing';
 
 function readData() {
     "use strict";
     var query, selectQuery;
     
     query = new google.visualization.Query(dblocation);
-    query.setQuery('select I, J, G'); 
-    query.send(handleQueryResponse);
+    query.setQuery('select I, J, G where S = "7:00 am"'); 
+    query.send(fillRoutes);
     
     query = new google.visualization.Query(dblocation);
     query.setQuery('select C, count(B) group by C');
@@ -315,7 +312,6 @@ function readData() {
     query = new google.visualization.Query(dblocation);
     query.setQuery('select P, count(B) group by P');
     query.send(fillCarChart);
-
 }
 
 function initializeMap() {
@@ -340,6 +336,43 @@ var app = angular.module('App', ['ngRoute']);
 app.config(function ($routeProvider) {
     "use strict";
 });
+
+var rowIndex = -1;
+$('.selectAll').click(function(){
+    var ind = $(this).closest('th').index();
+    if(ind == 0){
+            $('.case').click();
+        }
+    if($(this).is(':checked')){
+    $('table tr').each(function(){
+        $(this).children('td').eq(ind).children('input:checkbox').attr('checked', true);        
+    });
+
+        } else {
+            $('table tr').each(function(){
+        $(this).children('td').eq(ind).children('input:checkbox').attr('checked', false);
+                
+    });            
+        }
+});
+
+$('.case').click(rowCheck);
+
+function rowCheck(){
+    var ind = $(this).closest('td').index();
+    rowIndex = $(this).closest('td').parent().parent().children().index($(this).parent().parent());
+    if(ind == 0){        
+if($(this).is(':checked')){
+            $('table tr').eq(rowIndex).children('td').each(function(e){
+            $(this).children('input:checkbox').attr('checked', true); 
+        });
+} else {
+           $('table tr').eq(rowIndex).children('td').each(function(e){
+            $(this).children('input:checkbox').attr('checked', false); 
+        });
+}   
+    }
+}
 
 var SensorControllers = app.controller("SensorControllers", function ($scope) {
     "use strict";

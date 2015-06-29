@@ -1,36 +1,58 @@
 #map-canvas {
     width: 60vW;
-    height: 40vW;
-}
-.cntr-btn {
-    margin-top: 20px;
-}
-
-.btncontainer {
-    margin: 30px
-}
-
-.bottom-right {
-    position: fixed;
-    bottom: 0;
-    right: 0;
+    height: 70vH;
 }
 
 #mapContainer {
     margin: 30px;
 }
 
-.btn-row {
-    margin-top: 10px;
-}
-
-.btnPrincipal {
-    width: 90%;
-    margin-top: 20px;
-}
-
-.cnfg {
+.sidebar {
     position: fixed;
+    left: 0;
     bottom: 0;
-    right: 0;
+    top:0;
+}
+
+.sidebar-btn {
+    border: none;
+    border-radius: 0;
+}
+
+.sidebar-btn {
+    padding: 10px;
+    background: white;
+    color: black;
+    
+    border-bottom: #8d8d8d; 
+    border-bottom-width: 1px;
+    border-bottom-style: ridge;
+  
+}
+input:focus {outline: none; }
+
+.row {
+    margin-top: 10
+}
+
+.title {
+    padding: 10px;
+    background-color: white;
+    color: black;
+    
+    margin-right: 10px;
+    border-bottom: #8d8d8d; 
+    border-bottom-width: 3px;
+    border-bottom-style: ridge;
+}
+
+.subtitle {
+    background: transparent;
+    color: grey;
+}
+
+.chart {
+    height: 40vH;
+    min-height: 200px;
+    min-width: 300px
 }
