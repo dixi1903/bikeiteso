@@ -226,48 +226,50 @@ function fillRoutes(response) {
 
 var dblocation = "https://docs.google.com/spreadsheets/d/1ttm8HoES0jBq6SsAvBurAWb8UTi9E5csD-wUQWDHHpE/edit?usp=sharing";
 
-function readData() {
+function readData(queryClause) {
     "use strict";
     var query, selectQuery;
     
+    window.alert(queryClause);
+    
     query = new google.visualization.Query(dblocation);
-    query.setQuery("select I, J, G where S = '7:00 am' or T = '11:00 am'");
+    query.setQuery("select I, J, G" + queryClause);
     query.send(fillRoutes);
     
     query = new google.visualization.Query(dblocation);
-    query.setQuery("select C, count(B) group by C");
+    query.setQuery("select C, count(B)" + queryClause + " group by C");
     query.send(fillGenChart);
     
     query = new google.visualization.Query(dblocation);
-    query.setQuery("select E, count(B) group by E");
+    query.setQuery("select E, count(B)" + queryClause + "  group by E");
     query.send(fillCarreraChart);
     
     query = new google.visualization.Query(dblocation);
-    query.setQuery("select F, count(B) group by F");
+    query.setQuery("select F, count(B)" + queryClause + "  group by F");
     query.send(fillSemestreChart);
         
     query = new google.visualization.Query(dblocation);
-    query.setQuery("select J, count(B) group by J");
+    query.setQuery("select J, count(B)" + queryClause + "  group by J");
     query.send(fillMunChart);
     
     query = new google.visualization.Query(dblocation);
-    query.setQuery("select M, count(B) group by M");
+    query.setQuery("select M, count(B)" + queryClause + "  group by M");
     query.send(fillAlt1Chart);
 
     query = new google.visualization.Query(dblocation);
-    query.setQuery("select N, count(B) group by N");
+    query.setQuery("select N, count(B)" + queryClause + "  group by N");
     query.send(fillAlt2Chart);
     
     query = new google.visualization.Query(dblocation);
-    query.setQuery("select O, count(B) group by O");
+    query.setQuery("select O, count(B)" + queryClause + "  group by O");
     query.send(fillAlt3Chart);
     
     query = new google.visualization.Query(dblocation);
-    query.setQuery("select R, count(B) group by R");
+    query.setQuery("select R, count(B)" + queryClause + "  group by R");
     query.send(fillMotivChart);
     
     query = new google.visualization.Query(dblocation);
-    query.setQuery("select P, count(B) group by P");
+    query.setQuery("select P, count(B)" + queryClause + "  group by P");
     query.send(fillCarChart);
 }
 
@@ -276,7 +278,7 @@ function initializeMap() {
     
     var mapCanvas, mapOptions, geocoder, latlng, addresses, i,
         count, locations, markers;
-    mapCanvas = document.getElementById('map-canvas');
+    mapCanvas = document.getElementById("map-canvas");
     mapOptions = {
         center: new google.maps.LatLng(20, -103),
         zoom: 14,
@@ -284,9 +286,8 @@ function initializeMap() {
     };
     map = new google.maps.Map(mapCanvas, mapOptions);
     
-    readData();
+    //readData("");
 }
-
 
 var app = angular.module('App', ['ngRoute']);
 
@@ -294,60 +295,170 @@ app.config(function ($routeProvider) {
     "use strict";
 });
 
-/*var rowIndex = -1;
-$(".selectAll").click(function(){
-    var ind = $(this).closest('th').index();
-    if(ind == 0){
-            $('.case').click();
-        }
-    if($(this).is(':checked')){
-    $('table tr').each(function(){
-        $(this).children('td').eq(ind).children('input:checkbox').attr('checked', true);        
-    });
-
-        } else {
-            $('table tr').each(function(){
-        $(this).children('td').eq(ind).children('input:checkbox').attr('checked', false);
-                
-    });            
-        }
-});
-
-$(".case").click(rowCheck);
-
-function rowCheck(){
-    var ind = $(this).closest('td').index();
-    rowIndex = $(this).closest('td').parent().parent().children().index($(this).parent().parent());
-    if(ind == 0){        
-if($(this).is(':checked')){
-            $('table tr').eq(rowIndex).children('td').each(function(e){
-            $(this).children('input:checkbox').attr('checked', true); 
-        });
-} else {
-           $('table tr').eq(rowIndex).children('td').each(function(e){
-            $(this).children('input:checkbox').attr('checked', false); 
-        });
-}   
-    }
-}
-
-var SensorControllers = app.controller("SensorControllers", function ($scope) {
+$(document).ready(function () {
     "use strict";
-    $scope.Temperatura = 11.56;
-    $scope.Altitud = 1550;
-    $scope.Humedad = 54;
-    $scope.Presion = 811.3;
-    $scope.Position = "20°39′58″N 103°21′07″O";
     
-    //WatchPosition
-    navigator.geolocation.watchPosition(function (pos) {
-        initializeMap();
-        $scope.$apply(function () {
-            $scope.Position = pos.coords.latitude + "," + pos.coords.longitude;
-        }, showError);
+    $('.acb').click(function () {
+        if ($(this).is(':checked')) {
+            $(".cb").prop("checked", true);
+        } else {
+            $(".cb").prop("checked", false);
+        }
+    });
+
+    $('.alunes').click(function () {
+        if ($(this).is(':checked')) {
+            $(".lunes").prop("checked", true);
+        } else {
+            $(".lunes").prop("checked", false);
+        }
+    });
+    
+    $('.amartes').click(function () {
+        if ($(this).is(':checked')) {
+            $(".martes").prop("checked", true);
+        } else {
+            $(".martes").prop("checked", false);
+        }
+    });
+
+    $('.amiercoles').click(function () {
+        if ($(this).is(':checked')) {
+            $(".miercoles").prop("checked", true);
+        } else {
+            $(".miercoles").prop("checked", false);
+        }
+    });
+    
+    $('.ajueves').click(function () {
+        if ($(this).is(':checked')) {
+            $(".jueves").prop("checked", true);
+        } else {
+            $(".jueves").prop("checked", false);
+        }
+    });
+    
+    $('.aviernes').click(function () {
+        if ($(this).is(':checked')) {
+            $(".viernes").prop("checked", true);
+        } else {
+            $(".viernes").prop("checked", false);
+        }
+    });
+    
+    $('#lhora1').click(function () {
+        if ($(this).is(':checked')) {
+            $(".hora1").prop("checked", true);
+        } else {
+            $(".hora1").prop("checked", false);
+        }
+    });
+   
+    $('#lhora2').click(function () {
+        if ($(this).is(':checked')) {
+            $(".hora2").prop("checked", true);
+        } else {
+            $(".hora2").prop("checked", false);
+        }
+    });
+    
+    $('#lhora3').click(function () {
+        if ($(this).is(':checked')) {
+            $(".hora3").prop("checked", true);
+        } else {
+            $(".hora3").prop("checked", false);
+        }
+    });
+    
+    $('#lhora4').click(function () {
+        if ($(this).is(':checked')) {
+            $(".hora4").prop("checked", true);
+        } else {
+            $(".hora4").prop("checked", false);
+        }
+    });
+    
+    $('#lhora5').click(function () {
+        if ($(this).is(':checked')) {
+            $(".hora5").prop("checked", true);
+        } else {
+            $(".hora5").prop("checked", false);
+        }
+    });
+    
+    $("#buscar").click(function () {
+        var strresult, column;
+        
+        function valuetoTimeStr(value) {
+            var str;
+            
+            switch (value) {
+            case "1":
+                str = "7:00 am";
+                break;
+
+            case "2":
+                str = "9:00 am";
+                break;
+
+            case "3":
+                str = "11:00 am";
+                break;
+
+            case "4":
+                str = "1:00 pm";
+                break;
+
+            case "5":
+                str = "3:00 am";
+                break;
+            }
+            
+            return str;
+        }
+        
+        function constructQuery() {
+            var  time;
+            
+            time = valuetoTimeStr($(this).val());
+ 
+            if (strresult || strresult !== "") {
+                strresult = strresult + " or " + column + " = '" + time + "'";
+            } else {
+                strresult = " where " + column + " = '" + time + "'";
+            }
+        }
+        
+        strresult = "";
+        
+        column = "S";
+        $('.lunes:checked').each(
+            constructQuery
+        );
+        
+        column = "T";
+        $('.martes:checked').each(
+            constructQuery
+        );
+        
+        column = "U";
+        $('.miercoles:checked').each(
+            constructQuery
+        );
+        
+        column = "V";
+        $('.jueves:checked').each(
+            constructQuery
+        );
+        
+        column = "W";
+        $('.viernes:checked').each(
+            constructQuery
+        );
+    
+        readData(strresult);
     });
 });
-*/
 
 google.maps.event.addDomListener(window, "load", initializeMap);
 

@@ -17,72 +17,102 @@
         <script src="index.js"></script>
     </header>
     
-    <body>
-        <nav class="navbar-fixed-top col-xs-3 col-md-2 col-lg-12">
-            <a href="#General" class="sidebar-btn btn col-xs-12 col-lg-1">General</a>
-            <a href="#Genero" class="sidebar-btn btn col-xs-12 col-lg-1">Genero</a>
-            <a href="#Carrera" class="sidebar-btn btn col-xs-12 col-lg-1">Carrera</a>
-            <a href="#Semestre" class="sidebar-btn btn col-xs-12 col-lg-1">Semestre</a>
-            <a href="#Municipio" class="sidebar-btn btn col-xs-12 col-lg-1">Municipio</a>
-            <a href="#Transporte1" class="sidebar-btn btn col-xs-12 col-lg-1">Transporte 1</a>
-            <a href="#Transporte2" class="sidebar-btn btn col-xs-12 col-lg-1">Transporte 2</a>
-            <a href="#Transporte3" class="sidebar-btn btn col-xs-12 col-lg-1">Transporte 3</a>
-            <a href="#Auto" class="sidebar-btn btn col-xs-12 col-lg-1">Auto propio</a>
-            <a href="#Motivacion" class="sidebar-btn btn col-xs-12 col-lg-1">Motivación</a>
+    <body data-spy="scroll" data-target="#myScrollspy" data-offset="20">
+        <nav class="navbar-fixed-top col-xs-3 col-md-2 col-lg-12" id="myScrollspy">
+            <ul class="nav-pills nav">
+                <li class="col-xs-12 col-lg-1"><a href="#Busqueda" >Busqueda</a></li>
+                <li class="col-xs-12 col-lg-1"><a href="#Resultados">Resultados</a></li>
+                <li class="col-xs-12 col-lg-1"><a href="#Estadisticas">Estadisticas</a></li>
+            </ul>
+              <!-- <a href="#Busqueda" class="sidebar-btn btn col-xs-12 col-lg-1">Busqueda</a>
+                <a href="#Resultados" class="sidebar-btn btn col-xs-12 col-lg-1">Resultados</a>
+                <a href="#Estadisticas" class="sidebar-btn btn col-xs-12 col-lg-1">Estadisticas</a>
+                <a href="#Genero" class="sidebar-btn btn col-xs-12 col-lg-1">Genero</a>
+                <a href="#Carrera" class="sidebar-btn btn col-xs-12 col-lg-1">Carrera</a>
+                <a href="#Semestre" class="sidebar-btn btn col-xs-12 col-lg-1">Semestre</a>
+                <a href="#Municipio" class="sidebar-btn btn col-xs-12 col-lg-1">Municipio</a>
+                <a href="#Transporte1" class="sidebar-btn btn col-xs-12 col-lg-1">Transporte 1</a>
+                <a href="#Transporte2" class="sidebar-btn btn col-xs-12 col-lg-1">Transporte 2</a>
+                <a href="#Transporte3" class="sidebar-btn btn col-xs-12 col-lg-1">Transporte 3</a>
+                <a href="#Auto" class="sidebar-btn btn col-xs-12 col-lg-1">Auto propio</a>
+                <a href="#Motivacion" class="sidebar-btn btn col-xs-12 col-lg-1">Motivación</a>-->
         </nav>
         <div class="col-xs-9 col-md-10 col-lg-10 col-xs-offset-3 col-md-offset-2 col-lg-offset-1" style="margin-top:50px;">
-            <div class="col-xs-9 col-md-10 col-lg-10 col-xs-offset-3 col-md-offset-2 col-lg-offset-1">
-                 <table class="table table-bordered table-hover ">
-                <thead>
-                    <tr>
-                        <th><input type="checkbox" class='selectAll' id="selectall"/></th>
-                        <th><input type="checkbox" class='selectAll' id="selectall1"/>7:00 am</th>
-                        <th><input type="checkbox" class='selectAll' id="selectall2"/>9:00 am</th>
-                        <th><input type="checkbox" class='selectAll' id="selectall3"/>11:00 am</th>
-                    </tr>
-                </thead>
-                <tbody >
-                    <tr>
-                        <td align="center"><input type="checkbox" class="case" name="case" value="1"/></td>
-                        <td align="center"><input type="checkbox" class="case" name="case" value="2"/></td>
-                        <td align="center"><input type="checkbox" class="case" name="case" value="3"/></td>
-                        <td align="center"><input type="checkbox" class="case" name="case" value="4"/></td>
-                    </tr>
-                    <tr>
-                        <td align="center"><input type="checkbox" class="case" name="case" value="5"/></td>
-                        <td align="center"><input type="checkbox" class="case" name="case" value="6"/></td>
-                        <td align="center"><input type="checkbox" class="case" name="case" value="7"/></td>
-                        <td align="center"><input type="checkbox" class="case" name="case" value="8"/></td>
-                    </tr>
-                    <tr>
-                        <td align="center"><input type="checkbox" class="case" name="case" value="9"/></td>
-                        <td align="center"><input type="checkbox" class="case" name="case" value="10"/></td>
-                        <td align="center"><input type="checkbox" class="case" name="case" value="11"/></td>
-                        <td align="center"><input type="checkbox" class="case" name="case" value="12"/></td>
-                    </tr>
-                    <tr>
-                        <td align="center"><input type="checkbox" class="case" name="case" value="13"/></td>
-                        <td align="center"><input type="checkbox" class="case" name="case" value="14"/></td>
-                        <td align="center"><input type="checkbox" class="case" name="case" value="15"/></td>
-                        <td align="center"><input type="checkbox" class="case" name="case" value="16"/></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div id="Busqueda" class="col-xs-12 col-md-10 col-md-offset-1">
+                <h3 class="title">Busqueda</h3>
+                <button id="buscar" style="width: 80px; heigth: 30px">Buscar</button>
+                <table class="table table-bordered table-hover table-striped ">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" class='acb'/>Todos</th>
+                            <th><input type="checkbox" id="lhora1"/>7:00 am</th>
+                            <th><input type="checkbox" id="lhora2"/>9:00 am</th>
+                            <th><input type="checkbox" id="lhora3"/>11:00 am</th>
+                            <th><input type="checkbox" id="lhora4"/>1:00 pm</th>
+                            <th><input type="checkbox" id="lhora5"/>3:00 pm</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <tr>
+                            <td align="center"><input type="checkbox" class="cb alunes" value="0"/>Lunes</td>
+                            <td align="center"><input type="checkbox" class="cb lunes hora1" value="1"/></td>
+                            <td align="center"><input type="checkbox" class="cb lunes hora2" value="2"/></td>
+                            <td align="center"><input type="checkbox" class="cb lunes hora3" value="3"/></td>
+                            <td align="center"><input type="checkbox" class="cb lunes hora4" value="4"/></td>
+                            <td align="center"><input type="checkbox" class="cb lunes hora5" value="5"/></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><input type="checkbox" class="cb amartes" value="0"/>Martes</td>
+                            <td align="center"><input type="checkbox" class="cb martes hora1" value="1"/></td>
+                            <td align="center"><input type="checkbox" class="cb martes hora2" value="2"/></td>
+                            <td align="center"><input type="checkbox" class="cb martes hora3" value="3"/></td>
+                            <td align="center"><input type="checkbox" class="cb martes hora4" value="4"/></td>
+                            <td align="center"><input type="checkbox" class="cb martes hora5" value="5"/></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><input type="checkbox" class="cb amiercoles" value="0"/>Miercoles</td>
+                            <td align="center"><input type="checkbox" class="cb miercoles hora1" value="1"/></td>
+                            <td align="center"><input type="checkbox" class="cb miercoles hora2" value="2"/></td>
+                            <td align="center"><input type="checkbox" class="cb miercoles hora3" value="3"/></td>
+                            <td align="center"><input type="checkbox" class="cb miercoles hora4" value="4"/></td>
+                            <td align="center"><input type="checkbox" class="cb miercoles hora5" value="5"/></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><input type="checkbox" class="cb ajueves" value="0"/>Jueves</td>
+                            <td align="center"><input type="checkbox" class="cb jueves hora1" value="1"/></td>
+                            <td align="center"><input type="checkbox" class="cb jueves hora2" value="2"/></td>
+                            <td align="center"><input type="checkbox" class="cb jueves hora3" value="3"/></td>
+                            <td align="center"><input type="checkbox" class="cb jueves hora4" value="4"/></td>
+                            <td align="center"><input type="checkbox" class="cb jueves hora5" value="5"/></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><input type="checkbox" class="cb aviernes" value="0"/>Viernes</td>
+                            <td align="center"><input type="checkbox" class="cb viernes hora1" value="1"/></td>
+                            <td align="center"><input type="checkbox" class="cb viernes hora2" value="2"/></td>
+                            <td align="center"><input type="checkbox" class="cb viernes hora3" value="3"/></td>
+                            <td align="center"><input type="checkbox" class="cb viernes hora4" value="4"/></td>
+                            <td align="center"><input type="checkbox" class="cb viernes hora5" value="5"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="Resultados" class="col-xs-12 col-md-10 col-md-offset-1">
+                <h3 class="title">Resultados</h3>
             </div>
             <div id="map-canvas" class="col-xs-12 col-md-10 col-md-offset-1"></div>
-            <div class="row col-xs-12">
-                <h3 id="General" class="title">General</h3>
+            <div id="Estadisticas" class="row col-xs-12">
+                <h3 class="title">Estadisticas</h3>
                 <p class="col-xs-12 col-sm-6">Numero: {{BikesTotal}}</p>
                 <p class="col-xs-12 col-sm-6">Tiempo promedio: {{TimeAvr}} min</p>
                 <p class="col-xs-12 col-sm-6">Distancia promedio: {{DistanceAvr}} km</p>
                 <p class="col-xs-12 col-sm-6">Distancia total: {{DistanceTotal}} km</p>
             </div>
-            <div class="row col-xs-12 col-md-6 col-lg-4 ">
-                <h3   id="Genero" class="title">Genero</h3>
+            <div id="Genero" class="row col-xs-12 col-md-6 col-lg-4">
+                <h3 class="title">Genero</h3>
                 <div id="generochart" class="chart"></div>
             </div>
-            <div class="row col-xs-12 col-md-6 col-lg-4">
-                <h3 id="Carrera" class="title">Carrera</h3>
+            <div id="Carrera" class="row col-xs-12 col-md-6 col-lg-4">
+                <h3 class="title">Carrera</h3>
                 <div id="carerachart" class="chart"></div>
             </div>
             <div class="row col-xs-12 col-md-6 col-lg-4 col-xl-3">
@@ -93,13 +123,13 @@
                 <h3 id="Municipio" class="title">Municipio</h3>
                 <div id="municipiochart" class="chart"></div>
             </div>
-            <div class="row col-xs-12 col-md-6 col-lg-4 col-xl-3">
-                <h3 id="Transporte1" class="title">Transporte 1</h3>
+            <div id="Transporte1" class="row col-xs-12 col-md-6 col-lg-4 col-xl-3">
+                <h3  class="title">Transporte 1</h3>
                 <h6 class="subtitle">Sin contar la bicicleta ¿Cuál es tu principal medio de transporte?</h6>
                 <div id="atl1chart" class="chart"></div>
             </div>
-            <div class="row col-xs-12 col-md-6 col-lg-4 col-xl-3">
-                <h3 id="Transporte2" class="title">Transporte 2</h3>
+            <div id="Transporte2" class="row col-xs-12 col-md-6 col-lg-4 col-xl-3">
+                <h3 class="title">Transporte 2</h3>
                 <h6 class="subtitle">Sin contar la bicicleta ¿Cuál es tu segundo principal medio de transporte?</h6>
                 <div id="atl2chart" class="chart"></div>
             </div>
@@ -112,8 +142,8 @@
                 <h3 id="Auto" class="title">Auto propio</h3>
                 <div id="carchart" class="chart"></div>
             </div>
-            <div class="row col-xs-12 col-md-6 col-lg-4 col-xl-3">
-                <h3 id="Motivacion" class="title">Motivación</h3>
+            <div id="Motivacion" class="row col-xs-12 col-md-6 col-lg-4 col-xl-3">
+                <h3 class="title">Motivación</h3>
                 <div id="motivacionchart" class="chart"></div>   
             </div>
         </div>

@@ -24,12 +24,14 @@
     background: white;
     color: black;
     
+    
+    border: none;
     border-bottom: #8d8d8d; 
     border-bottom-width: 1px;
     border-bottom-style: ridge;
   
 }
-input:focus {outline: none; }
+
 
 .row {
     margin-top: 10
@@ -55,4 +57,42 @@ input:focus {outline: none; }
     height: 40vH;
     min-height: 200px;
     min-width: 300px
+}
+
+
+
+.navbar  .nav {
+    margin: 0;
+    display: table;
+    width: 100%;
+}
+
+.navbar
+{
+    background-color: white
+}
+
+.navbar .nav > li > a > li > a:focus,
+.navbar .nav > li > a > li > a:hover {
+  color: gold;
+  background-color: green;
+}
+
+
+
+.navbar-default .navbar-nav > li > a > li > a:focus,
+.navbar-default .navbar-nav > li > a > li > a:hover {
+   color: gold;
+  background-color: green;
+}
+
+.nav> li > a {
+    padding: 10px;
+    background: white;
+    color: black;
+
+    border: none;
+    border-bottom: #8d8d8d; 
+    border-bottom-width: 1px;
+    border-bottom-style: ridge;
 }
