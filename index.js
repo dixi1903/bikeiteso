@@ -173,19 +173,19 @@ function fillCarChart(response) {
 
 function fillRoutes(response) {
     "use strict";
-    var data, count, i, direccion, geocoder, lociteso, num, totdis, avrdis;
+    var data, bikestotal, i, direccion1, direccion2, geocoder, lociteso, num, totdis, avrdis;
     
     if (response.isError()) {
         window.alert(response.getMessage());
     }
     
     data = response.getDataTable();
-    count = data.getNumberOfRows();
+    bikestotal = data.getNumberOfRows();
     geocoder = new google.maps.Geocoder();
     totdis = 0;
 
     geocoder.geocode({ address: "+ITESO,+Tlaquepaque"}, function (results, status) {
-        var lat, lng;
+        var lat, lng, latlng;
 
         if (status === google.maps.GeocoderStatus.OK) {
             lat = results[0].geometry.location.lat();
@@ -194,33 +194,64 @@ function fillRoutes(response) {
         } else {
             window.alert("Geocode was not successful for the following reason: " + status);
         }
-  
-        for (i = 0; i < count; i++) {
+        
+        for (i = 0; i < bikestotal; i++) {
             
-            direccion = "+" + data.getValue(i, 0) + "+" + data.getValue(i, 1) + "+" + data.getValue(i, 2);
-
-            geocoder.geocode({ address: direccion}, function (results, status) {
-                var lat, lng, latlng;
+            direccion1 = "+" + data.getValue(i, 0) + "+" + data.getValue(i, 1) + "+" + data.getValue(i, 2);
+            direccion2 = "+" + data.getValue(i, 1) + "+" + data.getValue(i, 2);
+            
+            geocoder.geocode({address: direccion1}, function (results, status) {
+                var lat, lng, latlng, found;
 
                 if (status === google.maps.GeocoderStatus.OK) {
+                    
                     lat = results[0].geometry.location.lat();
                     lng = results[0].geometry.location.lng();
-                    latlng = new google.maps.LatLng(lat, lng);
+                    
+                    if ((lat>20.0 && lat<21.0) && (lng>-104.0 && lng<-103.0)){
+                        latlng = new google.maps.LatLng(lat, lng);
+                        found = true;
+                    } else { 
+                        found = false;
+                    }
+                   
                 } else {
                     window.alert("Geocode was not successful for the following reason: " + status);
                 }
-            
-                totdis = totdis + google.maps.geometry.spherical.computeDistanceBetween(lociteso,  latlng);
-                
-                if (i > 0) {
+
+                if (found) {
+                    totdis = totdis + google.maps.geometry.spherical.computeDistanceBetween(lociteso,  latlng);
                     generateRoute(lociteso,  latlng);
+                } else {
+                    geocoder.geocode({ address: direccion2}, function (results, status) {
+                        var lat, lng, latlng, found;
+                        
+                        
+                        if (status === google.maps.GeocoderStatus.OK) {
+
+                            lat = results[0].geometry.location.lat();
+                            lng = results[0].geometry.location.lng();
+                            
+                            if ((lat>20.0 && lat<21.0) && (lng>-104.0 && lng<-103.0)){
+                                latlng = new google.maps.LatLng(lat, lng);
+                                found = true;
+                            } else { 
+                                found = false;
+                            }
+
+                        } else {
+                            window.alert("Geocode was not successful for the following reason: " + status);
+                        }
+
+                        if (found) {
+                            totdis = totdis + google.maps.geometry.spherical.computeDistanceBetween(lociteso,  latlng);
+                            generateRoute(lociteso,  latlng);
+                        }
+                    });
                 }
             });
-        }
         
-        //window.alert("Total: " + count);
-        //window.alert("Distancia total: " + totdis/1000 + " km");
-        //window.alert("Distancia promedio: " + (totdis/1000)/count + " km");
+        }
     });
 }
 
