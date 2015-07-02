@@ -48,7 +48,8 @@ function fillCarreraChart(response) {
     var data, options, chart;
     
     data = response.getDataTable();
-
+    data.setColumnLabel(1, "Total");
+    
     options = {
         title: "Carrera",
         bar: {groupWidth: "95%"}
@@ -65,9 +66,11 @@ function fillSemestreChart(response) {
     var data, options, chart;
     
     data = response.getDataTable();
+    data.setColumnLabel(1, "Total");
 
     options = {
-        title: "Semestre"
+        title: "Semestre",
+        colors: ["red", "green", "yellow", "blue"]
     };
     
     chart = new google.visualization.BarChart(document.getElementById("semestrechart"));
@@ -97,6 +100,7 @@ function fillAlt1Chart(response) {
     var data, options, chart;
     
     data = response.getDataTable();
+    data.setColumnLabel(1, "Total");
 
     options = {
         title: "Primera altenativa de transporte"
@@ -113,6 +117,7 @@ function fillAlt2Chart(response) {
     var data, options, chart;
     
     data = response.getDataTable();
+    data.setColumnLabel(1, "Total");
 
     options = {
         title: "Segunda altenativa de transporte"
@@ -129,6 +134,7 @@ function fillAlt3Chart(response) {
     var data, options, chart;
     
     data = response.getDataTable();
+    data.setColumnLabel(1, "Total")
 
     options = {
         title: "Tercera altenativa de transporte"
@@ -162,12 +168,33 @@ function fillCarChart(response) {
     
     data = response.getDataTable();
     
+    window.alert(data.getValue(0, 0));
+    
     options = {
         title: "¿Tienes auto?"
     };
  
     chart = new google.visualization.PieChart(document.getElementById("carchart"));
     
+    chart.draw(data, options);
+}
+
+function fillHorarioChart(response) {
+    "use strict";
+    
+    var table, data, options, chart;
+    
+    data = response.getDataTable();
+    
+    table = new google.visualization.Table(document.getElementById('table_div'));
+    table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+    
+    options = {
+        title: "Horario",
+        isStacked: true 
+    };
+ 
+    chart = new google.visualization.BarChart(document.getElementById("horariochart"));
     chart.draw(data, options);
 }
 
@@ -270,7 +297,37 @@ function readData(queryClause) {
     
     query = new google.visualization.Query(dblocation);
     query.setQuery("select P, count(B)" + queryClause + "  group by P");
-    query.send(fillCarChart);
+    query.send(fillMotivChart);
+    
+    query = new google.visualization.Query(dblocation);
+    query.setQuery("select AF, AG where AG is not null");
+    query.send(fillHorarioChart);
+    
+    var data = google.visualization.arrayToDataTable([
+        ["Hora", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes"], 
+        ["7:00 am", 8, 7, 6, 5, 4],
+        ["9:00 am", 20, 22, 24, 14, 14],
+        ["11:00 am", 9, 25, 27, 22, 12],
+        ["1:00 pm", 18, 13, 16, 15, 8],
+        ["3:00 pm", 8, 7, 6, 5, 4]
+    ]);
+    
+    var options = {
+        title: "Viajes por horario",
+        chartArea: {width: "80%"},
+        isStacked: false,
+        hAxis: {
+          title: "Horarios",
+          minValue: 0,
+        },
+        vAxis: {
+          title: 'City'
+        }
+      };
+    
+    var chart = new google.visualization.AreaChart(document.getElementById("horario1chart"));
+    
+    chart.draw(data, options);
 }
 
 function initializeMap() {
@@ -293,6 +350,24 @@ var app = angular.module('App', ['ngRoute']);
 
 app.config(function ($routeProvider) {
     "use strict";
+});
+
+$(function() {
+    $("#idaRegreso").change(function() {
+        if ($(this).prop('checked')) {
+            $("#lahora1").text("7:00 am");
+            $("#lahora2").text("9:00 am");
+            $("#lahora3").text("11:00 am");
+            $("#lahora4").text("1:00 pm");
+            $("#lahora5").text("3:00 pm");
+        } else {
+            $("#lahora1").text("1:00 pm");
+            $("#lahora2").text("4:00 pm");
+            $("#lahora3").text("6:00 pm");
+            $("#lahora4").text("8:00 pm");
+            $("#lahora5").text("10:00 pm");
+        }
+    });
 });
 
 $(document).ready(function () {

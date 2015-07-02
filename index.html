@@ -3,7 +3,9 @@
     <header>
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="index.css">
+        <link href="css/bootstrap-toggle.css" rel="stylesheet">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="js/bootstrap-toggle.js"></script>
         <script src="angular.min.js"></script>
         <script src="angular-route.min.js"></script>
         <script src="bootstrap/js/bootstrap.min.js"></script>
@@ -13,6 +15,7 @@
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&v=3&libraries=geometry"></script>
         <script type="text/javascript">
             google.load('visualization', '1.0', {packages:["corechart"]});
+            google.load('visualization', '1', {packages: ['table']});
         </script>
         <script src="index.js"></script>
     </header>
@@ -34,36 +37,29 @@
                         <li><a href="#Transporte3">Transporte 3</a></li>
                         <li><a href="#Auto">Auto propio</a></li>
                         <li><a href="#Motivacion">Motivación</a></li>
-                
                     </ul>
                 </li>
             </ul>
-              <!-- <a href="#Busqueda" class="sidebar-btn btn col-xs-12 col-lg-1">Busqueda</a>
-                <a href="#Resultados" class="sidebar-btn btn col-xs-12 col-lg-1">Resultados</a>
-                <a href="#Estadisticas" class="sidebar-btn btn col-xs-12 col-lg-1">Estadisticas</a>
-                <a href="#Genero" class="sidebar-btn btn col-xs-12 col-lg-1">Genero</a>
-                <a href="#Carrera" class="sidebar-btn btn col-xs-12 col-lg-1">Carrera</a>
-                <a href="#Semestre" class="sidebar-btn btn col-xs-12 col-lg-1">Semestre</a>
-                <a href="#Municipio" class="sidebar-btn btn col-xs-12 col-lg-1">Municipio</a>
-                <a href="#Transporte1" class="sidebar-btn btn col-xs-12 col-lg-1">Transporte 1</a>
-                <a href="#Transporte2" class="sidebar-btn btn col-xs-12 col-lg-1">Transporte 2</a>
-                <a href="#Transporte3" class="sidebar-btn btn col-xs-12 col-lg-1">Transporte 3</a>
-                <a href="#Auto" class="sidebar-btn btn col-xs-12 col-lg-1">Auto propio</a>
-                <a href="#Motivacion" class="sidebar-btn btn col-xs-12 col-lg-1">Motivación</a>-->
         </nav>
-        <div class="col-xs-9 col-md-10 col-xs-offset-3 col-md-offset-2" style="margin-top:50px;">
+        <div class="col-xs-9 col-md-10 col-xs-offset-3 col-md-offset-2" >
             <div id="Busqueda" class="col-xs-12 col-md-10 col-md-offset-1">
                 <h3 class="title">Busqueda</h3>
-                <button id="buscar" style="width: 80px; heigth: 30px">Buscar</button>
+                <div style="margin: 20px" class="col-xs-offset-3">
+                     <input id="idaRegreso" checked type="checkbox" data-toggle="toggle" 
+                            data-on="De ida<br>al ITESO" data-off="De regreso<br>del ITESO" 
+                            data-onstyle="success" data-offstyle="info">
+                     <button id="buscar" class="myButton col-xs-offset-3">Buscar</button>
+                </div >
+                 
                 <table class="table table-bordered table-hover table-striped ">
                     <thead>
                         <tr>
                             <th><input type="checkbox" class='acb'/>Todos</th>
-                            <th><input type="checkbox" id="lhora1"/>7:00 am</th>
-                            <th><input type="checkbox" id="lhora2"/>9:00 am</th>
-                            <th><input type="checkbox" id="lhora3"/>11:00 am</th>
-                            <th><input type="checkbox" id="lhora4"/>1:00 pm</th>
-                            <th><input type="checkbox" id="lhora5"/>3:00 pm</th>
+                            <th><input type="checkbox" id="lhora1"/><l id="lahora1">7:00 am</l></th>
+                            <th><input type="checkbox" id="lhora2"/><l id="lahora2">9:00 am</l></th>
+                            <th><input type="checkbox" id="lhora3"/><l id="lahora3">11:00 am</l></th>
+                            <th><input type="checkbox" id="lhora4"/><l id="lahora4">1:00 pm</l></th>
+                            <th><input type="checkbox" id="lhora5"/><l id="lahora5">3:00 pm</l></th>
                         </tr>
                     </thead>
                     <tbody >
@@ -120,6 +116,9 @@
                 <p class="col-xs-12 col-sm-6">Tiempo promedio: {{TimeAvr}} min</p>
                 <p class="col-xs-12 col-sm-6">Distancia promedio: {{DistanceAvr}} km</p>
                 <p class="col-xs-12 col-sm-6">Distancia total: {{DistanceTotal}} km</p>
+                <div id="horario1chart" class="chart"></div>
+                <div id="horariochart" class="chart"></div>
+                <div id="table_div"></div>
             </div>
             <div id="Genero" class="row col-xs-12 col-md-6 col-lg-4">
                 <h3 class="title">Genero</h3>
