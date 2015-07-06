@@ -19,7 +19,6 @@
         </script>
         <script src="index.js"></script>
     </header>
-    
     <body data-spy="scroll" data-target="#myScrollspy" data-offset="20">
         <nav class="navbar hiden-print navbar-fixed-top col-xs-3 col-md-2" id="myScrollspy">
             <ul class="nav">
@@ -49,17 +48,19 @@
                             data-on="De ida<br>al ITESO" data-off="De regreso<br>del ITESO" 
                             data-onstyle="success" data-offstyle="info">
                      <button id="buscar" class="myButton col-xs-offset-3">Buscar</button>
-                </div >
-                 
+                </div >    
                 <table class="table table-bordered table-hover table-striped ">
                     <thead>
                         <tr>
                             <th><input type="checkbox" class='acb'/>Todos</th>
-                            <th><input type="checkbox" id="lhora1"/><l id="lahora1">7:00 am</l></th>
-                            <th><input type="checkbox" id="lhora2"/><l id="lahora2">9:00 am</l></th>
-                            <th><input type="checkbox" id="lhora3"/><l id="lahora3">11:00 am</l></th>
-                            <th><input type="checkbox" id="lhora4"/><l id="lahora4">1:00 pm</l></th>
-                            <th><input type="checkbox" id="lhora5"/><l id="lahora5">3:00 pm</l></th>
+                            <th><input type="checkbox" id="lhora1"/>7:00 am</th>
+                            <th><input type="checkbox" id="lhora2"/>9:00 am</th>
+                            <th><input type="checkbox" id="lhora3"/>11:00 am</th>
+                            <th><input type="checkbox" id="lhora4"/>1:00 pm</th>
+                            <th><input type="checkbox" id="lhora5"/>3:00 pm</th>
+                            <th><input type="checkbox" id="lhora6"/>6:00 pm</th>
+                            <th><input type="checkbox" id="lhora7"/>8:00 pm</th>
+                            <th><input type="checkbox" id="lhora8"/>10:00 pm</th>
                         </tr>
                     </thead>
                     <tbody >
@@ -70,6 +71,9 @@
                             <td align="center"><input type="checkbox" class="cb lunes hora3" value="3"/></td>
                             <td align="center"><input type="checkbox" class="cb lunes hora4" value="4"/></td>
                             <td align="center"><input type="checkbox" class="cb lunes hora5" value="5"/></td>
+                            <td align="center"><input type="checkbox" class="cb lunes hora6" value="6"/></td>
+                            <td align="center"><input type="checkbox" class="cb lunes hora7" value="7"/></td>
+                            <td align="center"><input type="checkbox" class="cb lunes hora8" value="8"/></td>
                         </tr>
                         <tr>
                             <td align="center"><input type="checkbox" class="cb amartes" value="0"/>Martes</td>
@@ -78,6 +82,9 @@
                             <td align="center"><input type="checkbox" class="cb martes hora3" value="3"/></td>
                             <td align="center"><input type="checkbox" class="cb martes hora4" value="4"/></td>
                             <td align="center"><input type="checkbox" class="cb martes hora5" value="5"/></td>
+                            <td align="center"><input type="checkbox" class="cb martes hora6" value="6"/></td>
+                            <td align="center"><input type="checkbox" class="cb martes hora7" value="7"/></td>
+                            <td align="center"><input type="checkbox" class="cb martes hora8" value="8"/></td>
                         </tr>
                         <tr>
                             <td align="center"><input type="checkbox" class="cb amiercoles" value="0"/>Miercoles</td>
@@ -86,6 +93,9 @@
                             <td align="center"><input type="checkbox" class="cb miercoles hora3" value="3"/></td>
                             <td align="center"><input type="checkbox" class="cb miercoles hora4" value="4"/></td>
                             <td align="center"><input type="checkbox" class="cb miercoles hora5" value="5"/></td>
+                            <td align="center"><input type="checkbox" class="cb miercoles hora6" value="6"/></td>
+                            <td align="center"><input type="checkbox" class="cb miercoles hora7" value="7"/></td>
+                            <td align="center"><input type="checkbox" class="cb miercoles hora8" value="8"/></td>
                         </tr>
                         <tr>
                             <td align="center"><input type="checkbox" class="cb ajueves" value="0"/>Jueves</td>
@@ -94,6 +104,9 @@
                             <td align="center"><input type="checkbox" class="cb jueves hora3" value="3"/></td>
                             <td align="center"><input type="checkbox" class="cb jueves hora4" value="4"/></td>
                             <td align="center"><input type="checkbox" class="cb jueves hora5" value="5"/></td>
+                            <td align="center"><input type="checkbox" class="cb jueves hora6" value="6"/></td>
+                            <td align="center"><input type="checkbox" class="cb jueves hora7" value="7"/></td>
+                            <td align="center"><input type="checkbox" class="cb jueves hora8" value="8"/></td>
                         </tr>
                         <tr>
                             <td align="center"><input type="checkbox" class="cb aviernes" value="0"/>Viernes</td>
@@ -102,23 +115,42 @@
                             <td align="center"><input type="checkbox" class="cb viernes hora3" value="3"/></td>
                             <td align="center"><input type="checkbox" class="cb viernes hora4" value="4"/></td>
                             <td align="center"><input type="checkbox" class="cb viernes hora5" value="5"/></td>
+                            <td align="center"><input type="checkbox" class="cb viernes hora6" value="6"/></td>
+                            <td align="center"><input type="checkbox" class="cb viernes hora7" value="7"/></td>
+                            <td align="center"><input type="checkbox" class="cb viernes hora8" value="8"/></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div id="Resultados" class="col-xs-12 col-md-10 col-md-offset-1">
                 <h3 class="title">Resultados</h3>
+           
+                <div id="map-canvas"></div>
+                <div class="table-responsive tablares">
+                     <table class="table table-bordered table-hover table-striped table-responsive" >
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Calle</th>
+                                <th>Colonia</th>
+                                <th>Zip</th>
+                                <th>Municipio</th>
+                                <th>Telefono</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultados"></tbody>
+                     </table>
+                </div>
             </div>
-            <div id="map-canvas" class="col-xs-12 col-md-10 col-md-offset-1"></div>
             <div id="Estadisticas" class="row col-xs-12">
                 <h3 class="title">Estadisticas</h3>
+                <div id="horarioIdachart" class="horariochart"></div>
+                <div id="horarioRegresochart" class="horariochart"></div>
+                <div id="table_div"></div>
                 <p class="col-xs-12 col-sm-6">Numero: {{BikesTotal}}</p>
                 <p class="col-xs-12 col-sm-6">Tiempo promedio: {{TimeAvr}} min</p>
                 <p class="col-xs-12 col-sm-6">Distancia promedio: {{DistanceAvr}} km</p>
                 <p class="col-xs-12 col-sm-6">Distancia total: {{DistanceTotal}} km</p>
-                <div id="horario1chart" class="chart"></div>
-                <div id="horariochart" class="chart"></div>
-                <div id="table_div"></div>
             </div>
             <div id="Genero" class="row col-xs-12 col-md-6 col-lg-4">
                 <h3 class="title">Genero</h3>
@@ -155,7 +187,7 @@
                 <h3 id="Auto" class="title">Auto propio</h3>
                 <div id="carchart" class="chart"></div>
             </div>
-            <div id="Motivacion" class="row col-xs-12 col-md-6 col-lg-4 col-xl-3">
+            <div id="Motivacion" class="row col-xs-12">
                 <h3 class="title">Motivación</h3>
                 <div id="motivacionchart" class="chart"></div>   
             </div>

@@ -2,7 +2,57 @@
 
 //https://developers.google.com/chart/interactive/docs/gallery/barchart
 
-var map;
+var map, colHora1, colHora2, colHora3, colHora4, colHora5, colHora6, colHora7, colHora8;
+
+function createMarkerButton(marker, person) {
+    var table, row, cell0, cell1, cell2, cell3, cell4, cell5;
+
+    table = document.getElementById("resultados");
+    row = table.insertRow();
+    cell0 = row.insertCell(0);
+    cell1 = row.insertCell(1);
+    cell2 = row.insertCell(2);
+    cell3 = row.insertCell(3);
+    cell4 = row.insertCell(4);
+    cell5 = row.insertCell(5);
+
+    cell0.innerHTML = person[0];
+    cell1.innerHTML = person[1];
+    cell2.innerHTML = person[2];
+    cell3.innerHTML = person[3];
+    cell4.innerHTML = person[4];
+    cell5.innerHTML = person[5];
+                                     
+    google.maps.event.addDomListener(row, "click", function () {
+        google.maps.event.trigger(marker, "click");
+    });
+}
+
+function createMarker(origin, person) {
+    
+    var marker, infoWnd;
+    
+    infoWnd = new google.maps.InfoWindow();
+    
+    marker = new google.maps.Marker({
+        title: person[0],
+        position: origin,
+        map: map,
+        animation: google.maps.Animation.DROP
+    });
+
+    google.maps.event.addListener(marker, "click", function () {
+        infoWnd.setContent("<strong>" + person[0] + "</strong><br>" +
+                            person[1] + "<br>" +
+                            person[2] + "<br>" +
+                            person[3] + "<br>" +
+                            person[4] + "<br>" +
+                            person[5] + "<br>");
+        infoWnd.open(map, marker);
+    });
+            
+    return marker;
+}
 
 function generateRoute(origin, destination) {
     "use strict";
@@ -10,7 +60,7 @@ function generateRoute(origin, destination) {
     var directionsService, directionsDisplay, request;
     
     directionsService = new google.maps.DirectionsService();
-    directionsDisplay = new google.maps.DirectionsRenderer();
+    directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
  
     request = {
         origin: origin,
@@ -70,7 +120,9 @@ function fillSemestreChart(response) {
 
     options = {
         title: "Semestre",
-        colors: ["red", "green", "yellow", "blue"]
+        colors: ["red", "yellow", "blue"],
+        vAxis: {format: '0'},
+        hAxis: {format: '0'}
     };
     
     chart = new google.visualization.BarChart(document.getElementById("semestrechart"));
@@ -134,7 +186,7 @@ function fillAlt3Chart(response) {
     var data, options, chart;
     
     data = response.getDataTable();
-    data.setColumnLabel(1, "Total")
+    data.setColumnLabel(1, "Total");
 
     options = {
         title: "Tercera altenativa de transporte"
@@ -153,10 +205,11 @@ function fillMotivChart(response) {
     data = response.getDataTable();
 
     options = {
-        title: "Llegada 9:00 am"
+        title: "Motivación",
+        isStacked: "True"
     };
     
-    chart = new google.visualization.PieChart(document.getElementById("motivacionchart"));
+    chart = new google.visualization.BarChart(document.getElementById("motivacionchart"));
     
     chart.draw(data, options);
 }
@@ -168,8 +221,6 @@ function fillCarChart(response) {
     
     data = response.getDataTable();
     
-    window.alert(data.getValue(0, 0));
-    
     options = {
         title: "¿Tienes auto?"
     };
@@ -179,7 +230,7 @@ function fillCarChart(response) {
     chart.draw(data, options);
 }
 
-function fillHorarioChart(response) {
+function fillHorarioIdaChart(response) {
     "use strict";
     
     var table, data, options, chart;
@@ -190,29 +241,45 @@ function fillHorarioChart(response) {
     table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
     
     options = {
-        title: "Horario",
-        isStacked: true 
+        title: "Ida al ITESO",
+        isStacked: true
     };
  
-    chart = new google.visualization.BarChart(document.getElementById("horariochart"));
+    chart = new google.visualization.BarChart(document.getElementById("horarioIdachart"));
+    chart.draw(data, options);
+}
+
+function fillHorarioRegresoChart(response) {
+    "use strict";
+    
+    var table, data, options, chart;
+    
+    data = response.getDataTable();
+    
+    options = {
+        title: "Regreso del ITESO",
+        isStacked: true
+    };
+ 
+    chart = new google.visualization.BarChart(document.getElementById("horarioRegresochart"));
     chart.draw(data, options);
 }
 
 function fillRoutes(response) {
     "use strict";
-    var data, count, i, direccion, geocoder, lociteso, num, totdis, avrdis;
+    var data, bikestotal, i, personinfo, name, street, colonia, lociteso,  zip, municipio, phone, direccion1, direccion2, geocoder, lociteso, num, totdis, avrdis;
     
     if (response.isError()) {
         window.alert(response.getMessage());
     }
     
     data = response.getDataTable();
-    count = data.getNumberOfRows();
+    bikestotal = data.getNumberOfRows();
     geocoder = new google.maps.Geocoder();
     totdis = 0;
 
-    geocoder.geocode({ address: "+ITESO,+Tlaquepaque"}, function (results, status) {
-        var lat, lng;
+  /*  geocoder.geocode({ address: "+ITESO,+Tlaquepaque"}, function (results, status) {
+        var lat, lng, latlng;
 
         if (status === google.maps.GeocoderStatus.OK) {
             lat = results[0].geometry.location.lat();
@@ -220,35 +287,84 @@ function fillRoutes(response) {
             lociteso = new google.maps.LatLng(lat, lng);
         } else {
             window.alert("Geocode was not successful for the following reason: " + status);
-        }
-  
-        for (i = 0; i < count; i++) {
+        }*/
+
+    lociteso = new google.maps.LatLng(20.6089747, -103.4145574);
+    
+    for (i = 0; i < bikestotal; i++) {
             
-            direccion = "+" + data.getValue(i, 0) + "+" + data.getValue(i, 1) + "+" + data.getValue(i, 2);
+        name = data.getValue(i, 0);
+        street = data.getValue(i, 1);
+        colonia = data.getValue(i, 2);
+        zip = data.getValue(i, 3);
+        municipio = data.getValue(i, 4);
+        phone = data.getValue(i, 5);
+        direccion1 = "+" + data.getValue(i, 3) + "+" + data.getValue(i, 4) + "+" + data.getValue(i, 1);
+        direccion2 = "+" + data.getValue(i, 4) + "+" + data.getValue(i, 1);
 
-            geocoder.geocode({ address: direccion}, function (results, status) {
-                var lat, lng, latlng;
+        personinfo = [name, street, colonia, zip, municipio, phone, direccion1, direccion2];
 
-                if (status === google.maps.GeocoderStatus.OK) {
-                    lat = results[0].geometry.location.lat();
-                    lng = results[0].geometry.location.lng();
+        (function (person) { geocoder.geocode({address: person[6]}, function (results, status) {
+            var lat, lng, latlng, found, marker;
+
+            if (status === google.maps.GeocoderStatus.OK) {
+
+                lat = results[0].geometry.location.lat();
+                lng = results[0].geometry.location.lng();
+
+                if ((lat > 20.0 && lat < 21.0) && (lng > -104.0 && lng < -103.0)) {
                     latlng = new google.maps.LatLng(lat, lng);
+                    found = true;
                 } else {
-                    window.alert("Geocode was not successful for the following reason: " + status);
+                    found = false;
                 }
-            
+
+
+            } else {
+                window.alert("Geocode was not successful for the following reason: " + status);
+            }
+
+            if (found) {
+
                 totdis = totdis + google.maps.geometry.spherical.computeDistanceBetween(lociteso,  latlng);
-                
-                if (i > 0) {
-                    generateRoute(lociteso,  latlng);
-                }
-            });
-        }
+                generateRoute(lociteso,  latlng);
+                marker = createMarker(latlng, person);
+                createMarkerButton(marker, person);
+
+            } else {
+
+                geocoder.geocode({ address: person[7]}, function (results, status) {
+                    var lat, lng, latlng, found;
+
+                    if (status === google.maps.GeocoderStatus.OK) {
+
+                        lat = results[0].geometry.location.lat();
+                        lng = results[0].geometry.location.lng();
+
+                        if ((lat > 20.0 && lat < 21.0) && (lng > -104.0 && lng < -103.0)) {
+                            latlng = new google.maps.LatLng(lat, lng);
+                            found = true;
+                        } else {
+                            found = false;
+                        }
+
+                    } else {
+                        window.alert("Geocode was not successful for the following reason: " + status);
+                    }
+
+                    if (found) {
+
+                        totdis = totdis + google.maps.geometry.spherical.computeDistanceBetween(lociteso,  latlng);
+                        generateRoute(lociteso,  latlng);
+                        marker = createMarker(latlng, person);
+                        createMarkerButton(marker, person);
+                    }
+                });
+            }
+            });  })(personinfo);
         
-        //window.alert("Total: " + count);
-        //window.alert("Distancia total: " + totdis/1000 + " km");
-        //window.alert("Distancia promedio: " + (totdis/1000)/count + " km");
-    });
+    }
+   /* });*/
 }
 
 var dblocation = "https://docs.google.com/spreadsheets/d/1ttm8HoES0jBq6SsAvBurAWb8UTi9E5csD-wUQWDHHpE/edit?usp=sharing";
@@ -257,10 +373,12 @@ function readData(queryClause) {
     "use strict";
     var query, selectQuery;
     
-    window.alert(queryClause);
+    if (queryClause === "") {
+        queryClause = " where B is not null";
+    }
     
     query = new google.visualization.Query(dblocation);
-    query.setQuery("select I, J, G" + queryClause);
+    query.setQuery("select B, G, H, I, J, K" + queryClause);
     query.send(fillRoutes);
     
     query = new google.visualization.Query(dblocation);
@@ -292,42 +410,20 @@ function readData(queryClause) {
     query.send(fillAlt3Chart);
     
     query = new google.visualization.Query(dblocation);
-    query.setQuery("select R, count(B)" + queryClause + "  group by R");
-    query.send(fillMotivChart);
-    
-    query = new google.visualization.Query(dblocation);
     query.setQuery("select P, count(B)" + queryClause + "  group by P");
+    query.send(fillCarChart);
+    
+    query = new google.visualization.Query(dblocation);
+    query.setQuery("select sum(AF), sum(AG), sum(AH), sum(AI), sum(AJ), sum(AK), sum(AL), sum(AM) where B is not null");
     query.send(fillMotivChart);
     
     query = new google.visualization.Query(dblocation);
-    query.setQuery("select AF, AG where AG is not null");
-    query.send(fillHorarioChart);
+    query.setQuery("select AN, AO, AP, AQ, AR, AS, AT, AU, AV limit 5");
+    query.send(fillHorarioIdaChart);
     
-    var data = google.visualization.arrayToDataTable([
-        ["Hora", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes"], 
-        ["7:00 am", 8, 7, 6, 5, 4],
-        ["9:00 am", 20, 22, 24, 14, 14],
-        ["11:00 am", 9, 25, 27, 22, 12],
-        ["1:00 pm", 18, 13, 16, 15, 8],
-        ["3:00 pm", 8, 7, 6, 5, 4]
-    ]);
-    
-    var options = {
-        title: "Viajes por horario",
-        chartArea: {width: "80%"},
-        isStacked: false,
-        hAxis: {
-          title: "Horarios",
-          minValue: 0,
-        },
-        vAxis: {
-          title: 'City'
-        }
-      };
-    
-    var chart = new google.visualization.AreaChart(document.getElementById("horario1chart"));
-    
-    chart.draw(data, options);
+    query = new google.visualization.Query(dblocation);
+    query.setQuery("select AN, AW, AX, AY, AZ, BA, BB, BC, BD limit 5");
+    query.send(fillHorarioRegresoChart);
 }
 
 function initializeMap() {
@@ -352,8 +448,8 @@ app.config(function ($routeProvider) {
     "use strict";
 });
 
-$(function() {
-    $("#idaRegreso").change(function() {
+$(function () {
+    $("#idaRegreso").change(function () {
         if ($(this).prop('checked')) {
             $("#lahora1").text("7:00 am");
             $("#lahora2").text("9:00 am");
@@ -461,6 +557,31 @@ $(document).ready(function () {
         }
     });
     
+    $('#lhora6').click(function () {
+        if ($(this).is(':checked')) {
+            $(".hora6").prop("checked", true);
+        } else {
+            $(".hora6").prop("checked", false);
+        }
+    });
+    
+    $('#lhora7').click(function () {
+        if ($(this).is(':checked')) {
+            $(".hora7").prop("checked", true);
+        } else {
+            $(".hora7").prop("checked", false);
+        }
+    });
+    
+    $('#lhora8').click(function () {
+        if ($(this).is(':checked')) {
+            $(".hora8").prop("checked", true);
+        } else {
+            $(".hora8").prop("checked", false);
+        }
+    });
+    
+    
     $("#buscar").click(function () {
         var strresult, column;
         
@@ -485,7 +606,19 @@ $(document).ready(function () {
                 break;
 
             case "5":
-                str = "3:00 am";
+                str = "3:00 pm";
+                break;
+                    
+            case "6":
+                str = "6:00 pm";
+                break;
+                    
+            case "7":
+                str = "8:00 am";
+                break;
+                    
+            case "8":
+                str = "10:00 am";
                 break;
             }
             
