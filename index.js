@@ -2,7 +2,15 @@
 
 //https://developers.google.com/chart/interactive/docs/gallery/barchart
 
-var map, colHora1, colHora2, colHora3, colHora4, colHora5, colHora6, colHora7, colHora8;
+var map, markers, directionsDisplay, colDia1, colDia2, colDia3, colDia4, colDia5;
+
+colDia1 = "S";
+colDia2 = "T";
+colDia3 = "U";
+colDia4 = "V";
+colDia5 = "W";
+
+markers = [];
 
 function createMarkerButton(marker, person) {
     var table, row, cell0, cell1, cell2, cell3, cell4, cell5;
@@ -237,9 +245,6 @@ function fillHorarioIdaChart(response) {
     
     data = response.getDataTable();
     
-    table = new google.visualization.Table(document.getElementById('table_div'));
-    table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
-    
     options = {
         title: "Ida al ITESO",
         isStacked: true
@@ -269,6 +274,9 @@ function fillRoutes(response) {
     "use strict";
     var data, bikestotal, i, personinfo, name, street, colonia, lociteso,  zip, municipio, phone, direccion1, direccion2, geocoder, lociteso, num, totdis, avrdis;
     
+    initializeMap();
+    $("#resultados tr").remove();
+    
     if (response.isError()) {
         window.alert(response.getMessage());
     }
@@ -277,17 +285,8 @@ function fillRoutes(response) {
     bikestotal = data.getNumberOfRows();
     geocoder = new google.maps.Geocoder();
     totdis = 0;
-
-  /*  geocoder.geocode({ address: "+ITESO,+Tlaquepaque"}, function (results, status) {
-        var lat, lng, latlng;
-
-        if (status === google.maps.GeocoderStatus.OK) {
-            lat = results[0].geometry.location.lat();
-            lng = results[0].geometry.location.lng();
-            lociteso = new google.maps.LatLng(lat, lng);
-        } else {
-            window.alert("Geocode was not successful for the following reason: " + status);
-        }*/
+    
+    $("#bikesTotal").text("Numero: " + bikestotal);
 
     lociteso = new google.maps.LatLng(20.6089747, -103.4145574);
     
@@ -329,7 +328,10 @@ function fillRoutes(response) {
                 totdis = totdis + google.maps.geometry.spherical.computeDistanceBetween(lociteso,  latlng);
                 generateRoute(lociteso,  latlng);
                 marker = createMarker(latlng, person);
+                markers.push(marker);
                 createMarkerButton(marker, person);
+                
+                $("#distTotal").text("Distancia total: " + totdis + " km");
 
             } else {
 
@@ -357,6 +359,7 @@ function fillRoutes(response) {
                         totdis = totdis + google.maps.geometry.spherical.computeDistanceBetween(lociteso,  latlng);
                         generateRoute(lociteso,  latlng);
                         marker = createMarker(latlng, person);
+                        markers.push(marker);
                         createMarkerButton(marker, person);
                     }
                 });
@@ -364,7 +367,6 @@ function fillRoutes(response) {
             });  })(personinfo);
         
     }
-   /* });*/
 }
 
 var dblocation = "https://docs.google.com/spreadsheets/d/1ttm8HoES0jBq6SsAvBurAWb8UTi9E5csD-wUQWDHHpE/edit?usp=sharing";
@@ -439,7 +441,6 @@ function initializeMap() {
     };
     map = new google.maps.Map(mapCanvas, mapOptions);
     
-    //readData("");
 }
 
 var app = angular.module('App', ['ngRoute']);
@@ -451,17 +452,17 @@ app.config(function ($routeProvider) {
 $(function () {
     $("#idaRegreso").change(function () {
         if ($(this).prop('checked')) {
-            $("#lahora1").text("7:00 am");
-            $("#lahora2").text("9:00 am");
-            $("#lahora3").text("11:00 am");
-            $("#lahora4").text("1:00 pm");
-            $("#lahora5").text("3:00 pm");
+            colDia1 = "S";
+            colDia2 = "T";
+            colDia3 = "U";
+            colDia4 = "V";
+            colDia5 = "W";
         } else {
-            $("#lahora1").text("1:00 pm");
-            $("#lahora2").text("4:00 pm");
-            $("#lahora3").text("6:00 pm");
-            $("#lahora4").text("8:00 pm");
-            $("#lahora5").text("10:00 pm");
+            colDia1 = "X";
+            colDia2 = "Y";
+            colDia3 = "Z";
+            colDia4 = "AA";
+            colDia5 = "AB";
         }
     });
 });
@@ -639,27 +640,27 @@ $(document).ready(function () {
         
         strresult = "";
         
-        column = "S";
+        column = colDia1;
         $('.lunes:checked').each(
             constructQuery
         );
         
-        column = "T";
+        column = colDia2;
         $('.martes:checked').each(
             constructQuery
         );
         
-        column = "U";
+        column = colDia3;
         $('.miercoles:checked').each(
             constructQuery
         );
         
-        column = "V";
+        column = colDia4;
         $('.jueves:checked').each(
             constructQuery
         );
         
-        column = "W";
+        column = colDia5;
         $('.viernes:checked').each(
             constructQuery
         );
